@@ -1,0 +1,13 @@
+local
+    $(SML_LIB)/basis/mlton.mlb
+    $(SML_LIB)/basis/basis.mlb
+in
+	local
+		$(SML_LIB)/basis/primitive/primitive.mlb
+	in
+	    db-mlton.sml
+	end
+	db.sml
+	t.sml
+	main.sml
+end
