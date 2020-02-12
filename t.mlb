@@ -4,6 +4,7 @@ local
 in
 	local
 		$(SML_LIB)/basis/primitive/primitive.mlb
+		$(SML_LIB)/basis/c-types.mlb
 	in
 	    db-mlton.sml
 	end

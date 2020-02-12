@@ -3,6 +3,7 @@
 #include <db.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <string.h>
 
 
 DB *db_open(const char *file, int flags, int mode, u_int db_type, u_int cachesize, u_int duplicate) {
@@ -41,4 +42,19 @@ DB *db_open(const char *file, int flags, int mode, u_int db_type, u_int cachesiz
 
 int db_close(DB *db) {
 	return db->close(db);
+}
+
+
+int db_put(const DB *db, void *key, size_t key_len, const void *data, const size_t data_len , u_int flags) {
+	DBT dbt_key, dbt_data;
+
+	memset(&dbt_key, 0, sizeof(dbt_key));
+	dbt_key.data = key;
+	dbt_key.size = key_len;
+
+	memset(&dbt_data, 0, sizeof(dbt_data));
+	dbt_data.data = (void *) data;
+	dbt_data.size = data_len;
+
+	return db->put(db, &dbt_key, &dbt_data, flags);
 }

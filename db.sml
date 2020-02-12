@@ -42,6 +42,9 @@ sig
 
   val dbopen : string * O.flags * Posix.FileSys.S.flags * DBTYPE -> db
   val close : db -> unit
+
+  val put : db * string * string * R.flags -> bool
+    (* return true or false is R_NOOVERWRITE flag was set and the key already exists in the file *)
 end
 =
 struct
@@ -105,7 +108,7 @@ struct
 
 
   fun sync () = ()
-  fun put () = ()
+
   fun get () = ()
   fun del () = ()
   fun seq () = ()

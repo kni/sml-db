@@ -9,6 +9,8 @@ local
 
   val db_close_ffi = buildCall1 ((getSymbol lib "db_close"), cPointer, cInt)
 
+  val db_put_ffi = buildCall6 ((getSymbol lib "db_put"), (cPointer, cString, cUlong, cString, cUlong, cUint), cInt)
+
   fun fail text = raise Fail (text ^ " (" ^ Int.toString (SysWord.toInt (Foreign.Error.getLastError ())) ^ ")." )
 in
   type db = Memory.voidStar
@@ -26,6 +28,14 @@ in
 
   fun close db = if db_close_ffi db < 0 then fail "Cannot close database" else ()
 
+
+
+  fun put (db, key, data, flags) =
+    let
+      val r = db_put_ffi (db, key, String.size key, data, String.size data, Word.toInt flags)
+    in
+      if r = 0 then true else if r = 1 then false else fail "Cannot put to database"
+    end
 end
 
 end
