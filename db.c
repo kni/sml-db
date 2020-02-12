@@ -45,7 +45,7 @@ int db_close(DB *db) {
 }
 
 
-int db_put(const DB *db, void *key, size_t key_len, const void *data, const size_t data_len , u_int flags) {
+int db_put(const DB *db, void *key, size_t key_len, const void *data, const size_t data_len, u_int flags) {
 	DBT dbt_key, dbt_data;
 
 	memset(&dbt_key, 0, sizeof(dbt_key));
@@ -57,4 +57,26 @@ int db_put(const DB *db, void *key, size_t key_len, const void *data, const size
 	dbt_data.size = data_len;
 
 	return db->put(db, &dbt_key, &dbt_data, flags);
+}
+
+
+int db_get (const DB *db, const void *key, const size_t key_len, void **data, size_t *data_len, u_int flags) {
+	DBT dbt_key, dbt_data;
+
+	memset(&dbt_key, 0, sizeof(dbt_key));
+	dbt_key.data = (void *) key;
+	dbt_key.size = key_len;
+
+	memset(&dbt_data, 0, sizeof(dbt_data));
+
+	int ret = db->get(db, &dbt_key, &dbt_data, flags);
+
+	if (ret == 0) {
+		*data = dbt_data.data;
+		*data_len = dbt_data.size;
+	} else {
+		*data = NULL;
+		*data_len = 0;
+	}
+	return ret;
 }

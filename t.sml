@@ -18,6 +18,7 @@ fun test () =
     val _ = put' ("two", "red")
     val _ = put' ("tree", "yellow")
 
+    val _ = case get (db, "two", R.flags []) of SOME v => () | NONE => ()
 
   in
     close db
