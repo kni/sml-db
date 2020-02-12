@@ -85,3 +85,14 @@ int db_get (const DB *db, const void *key, const size_t key_len, void **data, si
 	}
 	return ret;
 }
+
+
+int db_del (const DB *db, const void *key, const size_t key_len, u_int flags) {
+	DBT dbt_key;
+
+	memset(&dbt_key, 0, sizeof(dbt_key));
+	dbt_key.data = (void *) key;
+	dbt_key.size = key_len;
+
+	return db->del(db, &dbt_key, flags);
+}

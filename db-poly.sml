@@ -17,6 +17,8 @@ local
 
   val db_get_ffi = buildCall6 ((getSymbol lib "db_get"), (cPointer, cString, cUlong, cStar cPointer, cStar cUlong, cUint), cInt)
 
+  val db_del_ffi = buildCall4 ((getSymbol lib "db_del"), (cPointer, cString, cUlong, cUint), cInt)
+
   fun fail text = raise Fail (text ^ " (" ^ Int.toString (SysWord.toInt (Foreign.Error.getLastError ())) ^ ")." )
 in
   type db = Memory.voidStar
@@ -54,6 +56,14 @@ in
       if r = 0
       then SOME (readMem (!data_r, !data_len_r))
       else if r =1 then NONE else fail "Cannot get from database"
+    end
+
+
+  fun del (db, key, flags) =
+    let
+      val r = db_del_ffi (db, key, String.size key, Word.toInt flags)
+    in
+      if r = 0 then true else if r = 1 then false else fail "Cannot del from database"
     end
 end
 

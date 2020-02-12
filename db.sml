@@ -48,6 +48,8 @@ sig
     (* return true or false is R_NOOVERWRITE flag was set and the key already exists in the file *)
 
   val get : db * string * R.flags -> string option
+
+  val del : db * string * R.flags -> bool
 end
 =
 struct
@@ -109,7 +111,6 @@ struct
     end
 
 
-  fun del () = ()
   fun seq () = ()
 
 end

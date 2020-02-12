@@ -19,6 +19,8 @@ fun test () =
     val _ = put' ("tree", "yellow")
 
     val _ = case get (db, "two", R.flags []) of SOME v => () | NONE => ()
+    val _ = del (db, "two", R.flags [])
+    val _ = put' ("two", "red")
 
   in
     sync db;

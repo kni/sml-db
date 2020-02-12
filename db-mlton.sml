@@ -16,6 +16,8 @@ local
 
   val db_get_ffi = _import "db_get": t * string * C_Size.word * t ref * C_Size.word ref * word-> int;
 
+  val db_del_ffi = _import "db_del": t * string * C_Size.word * word-> int;
+
   fun fail text = raise Fail (text ^ " (" ^ Int.toString (PrimitiveFFI.Posix.Error.getErrno ()) ^ ")." )
 in
   type db = t
@@ -53,6 +55,14 @@ in
       if r = 0
       then SOME (readMem (!data_r, C_Size.toInt (!data_len_r)))
       else if r = 1 then NONE else fail "Cannot get from database"
+    end
+
+
+  fun del (db, key, flags) =
+    let
+      val r = db_del_ffi (db, key, C_Size.fromInt (String.size key), flags)
+    in
+      if r = 0 then true else if r = 1 then false else fail "Cannot del from database"
     end
 end
 
