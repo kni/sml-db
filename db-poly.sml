@@ -19,6 +19,8 @@ local
 
   val db_del_ffi = buildCall4 ((getSymbol lib "db_del"), (cPointer, cString, cUlong, cUint), cInt)
 
+  val db_seq_ffi = buildCall6 ((getSymbol lib "db_seq"), (cPointer, cStar cPointer, cStar cUlong, cStar cPointer, cStar cUlong, cUint), cInt)
+
   fun fail text = raise Fail (text ^ " (" ^ Int.toString (SysWord.toInt (Foreign.Error.getLastError ())) ^ ")." )
 in
   type db = Memory.voidStar
@@ -55,7 +57,7 @@ in
     in
       if r = 0
       then SOME (readMem (!data_r, !data_len_r))
-      else if r =1 then NONE else fail "Cannot get from database"
+      else if r = 1 then NONE else fail "Cannot get from database"
     end
 
 
@@ -65,6 +67,21 @@ in
     in
       if r = 0 then true else if r = 1 then false else fail "Cannot del from database"
     end
+
+
+ fun seq (db, flags) =
+    let
+      val key_r = ref Memory.null
+      val key_len_r = ref 0
+      val data_r = ref Memory.null
+      val data_len_r = ref 0
+      val r  = db_seq_ffi (db, key_r, key_len_r, data_r, data_len_r, Word.toInt flags)
+    in
+      if r = 0
+      then SOME (readMem (!key_r, !key_len_r), readMem (!data_r, !data_len_r))
+      else if r = 1 then NONE else fail "Cannot seq database"
+    end
+
 end
 
 end

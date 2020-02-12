@@ -18,9 +18,12 @@ fun test () =
     val _ = put' ("two", "red")
     val _ = put' ("tree", "yellow")
 
-    val _ = case get (db, "two", R.flags []) of SOME v => () | NONE => ()
-    val _ = del (db, "two", R.flags [])
-    val _ = put' ("two", "red")
+    val _ = case get (db, "tree", R.flags []) of SOME v => () | NONE => ()
+    val _ = del (db, "tree", R.flags [])
+    val _ = put' ("tree", "yellow")
+
+    fun do_seq () = case seq (db, R.flags [R.next]) of NONE => () | SOME (k, v) => ( print (k ^ ": " ^ v ^ "\n") ; do_seq () )
+    val _ = do_seq ()
 
   in
     sync db;

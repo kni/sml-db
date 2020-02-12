@@ -65,7 +65,7 @@ int db_put(const DB *db, void *key, size_t key_len, const void *data, const size
 }
 
 
-int db_get (const DB *db, const void *key, const size_t key_len, void **data, size_t *data_len, u_int flags) {
+int db_get(const DB *db, const void *key, const size_t key_len, void **data, size_t *data_len, u_int flags) {
 	DBT dbt_key, dbt_data;
 
 	memset(&dbt_key, 0, sizeof(dbt_key));
@@ -87,7 +87,7 @@ int db_get (const DB *db, const void *key, const size_t key_len, void **data, si
 }
 
 
-int db_del (const DB *db, const void *key, const size_t key_len, u_int flags) {
+int db_del(const DB *db, const void *key, const size_t key_len, u_int flags) {
 	DBT dbt_key;
 
 	memset(&dbt_key, 0, sizeof(dbt_key));
@@ -95,4 +95,27 @@ int db_del (const DB *db, const void *key, const size_t key_len, u_int flags) {
 	dbt_key.size = key_len;
 
 	return db->del(db, &dbt_key, flags);
+}
+
+
+int db_seq(const DB *db, void **key, size_t *key_len, void **data, size_t *data_len, u_int flags) {
+	DBT dbt_key, dbt_data;
+
+	memset(&dbt_key, 0, sizeof(dbt_key));
+	memset(&dbt_data, 0, sizeof(dbt_data));
+
+	int ret = db->seq(db, &dbt_key, &dbt_data, flags);
+
+	if (ret == 0) {
+		*key = dbt_key.data;
+		*key_len = dbt_key.size;
+		*data = dbt_data.data;
+		*data_len = dbt_data.size;
+	} else {
+		*key = NULL;
+		*key_len = 0;
+		*data = NULL;
+		*data_len = 0;
+	}
+	return ret;
 }

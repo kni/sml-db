@@ -50,6 +50,8 @@ sig
   val get : db * string * R.flags -> string option
 
   val del : db * string * R.flags -> bool
+
+  val seq : db * R.flags -> (string * string) option
 end
 =
 struct
@@ -109,8 +111,5 @@ struct
     in
       dbopen_ffi(file, Word.toInt flags, SysWord.toInt (Posix.FileSys.S.toWord mode), dbtype, cachesize, duplicate)
     end
-
-
-  fun seq () = ()
 
 end

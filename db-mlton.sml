@@ -18,6 +18,8 @@ local
 
   val db_del_ffi = _import "db_del": t * string * C_Size.word * word-> int;
 
+  val db_seq_ffi = _import "db_seq": t * t ref * C_Size.word ref * t ref * C_Size.word ref * word-> int;
+
   fun fail text = raise Fail (text ^ " (" ^ Int.toString (PrimitiveFFI.Posix.Error.getErrno ()) ^ ")." )
 in
   type db = t
@@ -64,6 +66,21 @@ in
     in
       if r = 0 then true else if r = 1 then false else fail "Cannot del from database"
     end
+
+
+  fun seq (db, flags) =
+    let
+      val key_r = ref null
+      val key_len_r = ref 0w0
+      val data_r = ref null
+      val data_len_r = ref 0w0
+      val r  = db_seq_ffi (db,  key_r, key_len_r, data_r, data_len_r, flags)
+    in
+      if r = 0
+      then SOME (readMem (!key_r, C_Size.toInt (!key_len_r)), readMem (!data_r, C_Size.toInt (!data_len_r)))
+      else if r = 1 then NONE else fail "Cannot seq database"
+    end
+
 end
 
 end
