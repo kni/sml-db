@@ -41,7 +41,8 @@ sig
   type db
 
   val dbopen : string * O.flags * Posix.FileSys.S.flags * DBTYPE -> db
-  val close : db -> unit
+  val sync   : db -> unit
+  val close  : db -> unit
 
   val put : db * string * string * R.flags -> bool
     (* return true or false is R_NOOVERWRITE flag was set and the key already exists in the file *)
@@ -107,9 +108,6 @@ struct
       dbopen_ffi(file, Word.toInt flags, SysWord.toInt (Posix.FileSys.S.toWord mode), dbtype, cachesize, duplicate)
     end
 
-
-
-  fun sync () = ()
 
   fun del () = ()
   fun seq () = ()

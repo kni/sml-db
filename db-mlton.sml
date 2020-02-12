@@ -8,6 +8,8 @@ local
 
   val db_open_ffi = _import "db_open": string * int * int * word * word * word -> t;
 
+  val db_sync_ffi = _import "db_sync": t -> int;
+
   val db_close_ffi = _import "db_close": t -> int;
 
   val db_put_ffi = _import "db_put": t * string * C_Size.word * string * C_Size.word * word-> int;
@@ -28,6 +30,8 @@ in
       else db
     end
 
+
+  fun sync db = if db_sync_ffi db < 0 then fail "Cannot sync database" else ()
 
   fun close db = if db_close_ffi db < 0 then fail "Cannot close database" else ()
 

@@ -9,6 +9,8 @@ local
 
   val db_open_ffi = buildCall6 ((getSymbol lib "db_open"), (cString, cInt, cInt, cUint, cUint, cUint), cPointer)
 
+  val db_sync_ffi = buildCall1 ((getSymbol lib "db_sync"), cPointer, cInt)
+
   val db_close_ffi = buildCall1 ((getSymbol lib "db_close"), cPointer, cInt)
 
   val db_put_ffi = buildCall6 ((getSymbol lib "db_put"), (cPointer, cString, cUlong, cString, cUlong, cUint), cInt)
@@ -29,6 +31,8 @@ in
       else db
     end
 
+
+  fun sync db = if db_sync_ffi db < 0 then fail "Cannot sync database" else ()
 
   fun close db = if db_close_ffi db < 0 then fail "Cannot close database" else ()
 

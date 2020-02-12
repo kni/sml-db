@@ -40,6 +40,11 @@ DB *db_open(const char *file, int flags, int mode, u_int db_type, u_int cachesiz
 }
 
 
+int db_sync(DB *db) {
+	return db->sync(db, 0);
+}
+
+
 int db_close(DB *db) {
 	return db->close(db);
 }

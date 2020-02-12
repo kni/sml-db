@@ -21,6 +21,7 @@ fun test () =
     val _ = case get (db, "two", R.flags []) of SOME v => () | NONE => ()
 
   in
+    sync db;
     close db
   end
 
