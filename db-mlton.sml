@@ -20,7 +20,7 @@ local
 
   val db_seq_ffi = _import "db_seq": t * t ref * C_Size.word ref * t ref * C_Size.word ref * word-> int;
 
-  fun fail text = raise Fail (text ^ " (" ^ Int.toString (PrimitiveFFI.Posix.Error.getErrno ()) ^ ")." )
+  fun fail text = raise Fail (text ^ " (errno " ^ Int.toString (PrimitiveFFI.Posix.Error.getErrno ()) ^ ")." )
 in
   type db = t
 

@@ -90,7 +90,6 @@ int db_get(const DB *db, const void *key, const size_t key_len, void **data, siz
 int db_del(const DB *db, const void *key, const size_t key_len, u_int flags) {
 	DBT dbt_key;
 
-	memset(&dbt_key, 0, sizeof(dbt_key));
 	dbt_key.data = (void *) key;
 	dbt_key.size = key_len;
 
@@ -100,9 +99,6 @@ int db_del(const DB *db, const void *key, const size_t key_len, u_int flags) {
 
 int db_seq(const DB *db, void **key, size_t *key_len, void **data, size_t *data_len, u_int flags) {
 	DBT dbt_key, dbt_data;
-
-	memset(&dbt_key, 0, sizeof(dbt_key));
-	memset(&dbt_data, 0, sizeof(dbt_data));
 
 	int ret = db->seq(db, &dbt_key, &dbt_data, flags);
 

@@ -21,7 +21,7 @@ local
 
   val db_seq_ffi = buildCall6 ((getSymbol lib "db_seq"), (cPointer, cStar cPointer, cStar cUlong, cStar cPointer, cStar cUlong, cUint), cInt)
 
-  fun fail text = raise Fail (text ^ " (" ^ Int.toString (SysWord.toInt (Foreign.Error.getLastError ())) ^ ")." )
+  fun fail text = raise Fail (text ^ " (errno " ^ Int.toString (SysWord.toInt (Foreign.Error.getLastError ())) ^ ")." )
 in
   type db = Memory.voidStar
 

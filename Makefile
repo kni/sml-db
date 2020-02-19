@@ -13,4 +13,4 @@ mlton:
 	./t-mlton
 
 clean:
-	rm -f t-poly t-mlton db.so
+	rm -f t-poly t-mlton db.so db.o
