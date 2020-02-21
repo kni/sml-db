@@ -10,6 +10,8 @@ https://svn.freebsd.org/base/head/lib/libc/db/
 For Linux you can use Berkeley DB 1.85 or Oracle Berkeley DB with old API.
 Attention, Oracle Berkeley DB have Affero General Public License.
 
-How to install Berkeley DB 1.85 on Linux, see
+How to install Berkeley DB 1.85/1.86 on Linux, see
+See also
+https://www.oracle.com/database/technologies/related/berkeleydb-release-history.html
+https://github.com/pfalcon/berkeley-db-1.xx
 https://sixthhappiness.github.io/articles/Db-1.85-the-original-BSD-license-Berkeley-DB/index.html There is a patch to build on Linux.
-See also https://github.com/pfalcon/berkeley-db-1.xx
